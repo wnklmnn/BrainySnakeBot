@@ -88,6 +88,7 @@ public class YourPlayer implements BrainySnakePlayer {
                             stepQ.add(doit.FORWARD);
                         }
                     }
+                    break;
                 }
                 case -1:{
                     stepQ.add(doit.LEFT);
@@ -97,6 +98,7 @@ public class YourPlayer implements BrainySnakePlayer {
                             stepQ.add(doit.FORWARD);
                         }
                     }
+                    break;
                 }
                 case 0:{
                     if(p.y>0){
@@ -105,6 +107,7 @@ public class YourPlayer implements BrainySnakePlayer {
                             stepQ.add(doit.FORWARD);
                         }
                     }
+                    break;
                 }
                 case 1:{
                     stepQ.add(doit.RIGHT);
@@ -114,6 +117,7 @@ public class YourPlayer implements BrainySnakePlayer {
                             stepQ.add(doit.FORWARD);
                         }
                     }
+                    break;
                 }
                 case 2:{
                     stepQ.add(doit.RIGHT);
@@ -124,11 +128,23 @@ public class YourPlayer implements BrainySnakePlayer {
                             stepQ.add(doit.FORWARD);
                         }
                     }
+                    break;
                 }
             }
 
+            switch(stepQ.poll()){
+                case LEFT:
+                    return new PlayerUpdate(left());
+                case RIGHT:
+                    return new PlayerUpdate(right());
+                case FORWARD:
+                    return new PlayerUpdate(forward());
+                default:
+                    return new PlayerUpdate(forward());
+            }
 
         }
+
         for(int i = 0; i<25; i++){
             if(i%5==0)
                 System.out.println("");
