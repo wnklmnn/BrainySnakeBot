@@ -25,6 +25,7 @@ public class PlayerController {
 
     private ExecutorService playerUpdateCallableExecutor;
 
+
     public PlayerController(List<BrainySnakePlayer> playerList, Map<Orientation, Snake> playerGameObjects) {
 
         // Shuffle Colors
@@ -111,14 +112,14 @@ public class PlayerController {
                 playerUpdate = playerUpdateFuture.get(Config.MAX_AGENT_PROCESSING_TIME_MS, TimeUnit.MILLISECONDS);
                 agentChoiceMap.put(playerHandler, handlePlayerUpdate(playerUpdate, playerHandler));
             } catch (InterruptedException e) {
-                Gdx.app.error("PlayerController: Future Operation was interrupted ", e.getMessage());
+                //Gdx.app.error("PlayerController: Future Operation was interrupted ", e.getMessage());
             } catch (ExecutionException e) {
-                Gdx.app.error("PlayerController: ExecutionException ", e.getMessage());
+                //Gdx.app.error("PlayerController: ExecutionException ", e.getMessage());
             } catch (TimeoutException e) {
                 agentChoiceMap.put(playerHandler, PlayerChoice.createNoChoice());
                 playerHandler.kill();
-                Gdx.app.error("PlayerController",
-                        "Player: " + playerHandler.getPlayerName() + " got Timeout after " + Config.MAX_AGENT_PROCESSING_TIME_MS + " ms and got killed ", e);
+                //Gdx.app.error("PlayerController",
+                //        "Player: " + playerHandler.getPlayerName() + " got Timeout after " + Config.MAX_AGENT_PROCESSING_TIME_MS + " ms and got killed ", e);
                 continue;
             }
 
@@ -183,7 +184,7 @@ public class PlayerController {
 
     private PlayerChoice handlePlayerUpdate(PlayerUpdate playerUpdate, PlayerHandler playerHandler) {
         if (playerUpdate == null || playerUpdate.getNextStep() == null) {
-            Gdx.app.error("PlayerController", "Player: " + playerHandler.getPlayerName() + " returns invalid PlayerUpdate");
+            //Gdx.app.error("PlayerController", "Player: " + playerHandler.getPlayerName() + " returns invalid PlayerUpdate");
             return PlayerChoice.createNoChoice();
         }
         return new PlayerChoice(playerUpdate.getNextStep());

@@ -132,7 +132,7 @@ public class PlayerHandler {
 
     public void kill() {
         dead = true;
-        Gdx.app.log("AGENT: ", "Player " + brainySnakePlayer.getPlayerName() + " has dieded");
+        //Gdx.app.log("AGENT: ", "Player " + brainySnakePlayer.getPlayerName() + " has dieded");
     }
 
     public boolean isDead() {

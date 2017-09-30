@@ -1,0 +1,10 @@
+apply plugin:"java"
+apply plugin:"application"
+mainClassName="de.wnklmnn.brainy.Main"
+ sourceSets{
+    main{
+        java{
+            srcDirs=['src/main/']
+        }
+    }
+ }
