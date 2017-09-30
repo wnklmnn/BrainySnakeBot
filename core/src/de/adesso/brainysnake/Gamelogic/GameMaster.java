@@ -27,34 +27,6 @@ import static de.adesso.brainysnake.playercommon.RoundEvent.*;
 
 public class GameMaster {
 
-    // Alle Spiele erzeugen
-    private BrainySnakePlayer playerOne = new KeyBoardPlayer();
-    private BrainySnakePlayer yourPlayer = new YourPlayer();
-    private BrainySnakePlayer playerTwo = new SamplePlayer() {
-
-        @Override
-        public String getPlayerName() {
-            return "SamplePlayer Two";
-        }
-    };
-    private BrainySnakePlayer playerThree = new SamplePlayer() {
-
-        @Override
-        public String getPlayerName() {
-            return "SamplePlayer Three";
-        }
-    };
-    private BrainySnakePlayer playerFour = new SamplePlayer() {
-
-        @Override
-        public String getPlayerName() {
-            return "SamplePlayer Four";
-        }
-    };
-
-    // Add all Agents here
-    private List<BrainySnakePlayer> brainySnakePlayers = new ArrayList<BrainySnakePlayer>();
-
     private PlayerController playerController;
 
     private Level level;
@@ -65,10 +37,19 @@ public class GameMaster {
         this.level = level;
 
         // Add agents to the game
+        List<BrainySnakePlayer> brainySnakePlayers = new ArrayList<BrainySnakePlayer>();
+        BrainySnakePlayer playerOne = new KeyBoardPlayer();
+        BrainySnakePlayer playerTwo = new SamplePlayer() {
+
+            @Override
+            public String getPlayerName() {
+                return "SamplePlayer Two";
+            }
+        };
+
         brainySnakePlayers.add(playerOne);
-        brainySnakePlayers.add(playerTwo);
-        brainySnakePlayers.add(yourPlayer);
-        //brainySnakePlayers.add(playerFour);
+        brainySnakePlayers.add(new YourPlayer());
+        brainySnakePlayers.add(new YourPlayer());
 
         // Build UI Models for the agents
         Map<Orientation, Snake> brainySnakePlayersUiModel = new HashMap<Orientation, Snake>();

@@ -56,6 +56,7 @@ public class KeyBoardPlayer implements BrainySnakePlayer {
     public boolean handlePlayerStatusUpdate(PlayerState playerState) {
             /* The SamplePlayer is very lazy, it just stores the last data */
         this.playerState = playerState;
+        System.out.println(playerState.getPlayerView().getVisibleFields());
         return true;
     }
 }
