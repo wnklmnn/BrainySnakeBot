@@ -54,10 +54,10 @@ public class YourPlayer implements BrainySnakePlayer {
 
     @Override
     public PlayerUpdate tellPlayerUpdate() {
-        if(isPoint()>-1){
-            System.out.println("Yay");
-        }
-        printPlayerView(this.ps.getPlayerView().getVisibleFields());
+        //if(isPoint()>-1){
+        //    System.out.println("Yay");
+        //}
+        //printPlayerView(this.ps.getPlayerView().getVisibleFields());
 
         return new PlayerUpdate(null);
     }

@@ -19,7 +19,8 @@ public class KeyBoardPlayer implements BrainySnakePlayer {
 
     @Override
     public PlayerUpdate tellPlayerUpdate() {
-
+        System.out.println("Keyoard:");
+        YourPlayer.printPlayerView(this.playerState.getPlayerView().getVisibleFields());
         if (KeyBoardControl.LEFT) {
             left = true;
             right = up = down = false;
@@ -49,8 +50,7 @@ public class KeyBoardPlayer implements BrainySnakePlayer {
         if (down) {
             return new PlayerUpdate(Orientation.DOWN);
         }
-        System.out.println("Keyoard:");
-        YourPlayer.printPlayerView(this.playerState.getPlayerView().getVisibleFields());
+
         return null;
     }
 
