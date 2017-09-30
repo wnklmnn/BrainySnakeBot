@@ -15,9 +15,13 @@ public class YourPlayer implements BrainySnakePlayer {
     private String name;
     private PlayerState ps;
     private Queue<doit> stepQ;
+    private Queue<doit> zigzagQ;
+    private doit lastStep;
     public YourPlayer() {
         this.name = String.format("YourPlayer%d", ++num);
         stepQ = new LinkedList<doit>();
+        zigzagQ = new LinkedList<doit>();
+        lastStep = doit.RIGHT;
     }
     public static void printPlayerView(List<Field> f){
         for(int i = 0; i<25; i++){
@@ -88,6 +92,8 @@ public class YourPlayer implements BrainySnakePlayer {
                             stepQ.add(doit.FORWARD);
                         }
                     }
+                    stepQ.add(doit.RIGHT);
+                    stepQ.add(doit.RIGHT);
                     break;
                 }
                 case -1:{
@@ -144,6 +150,24 @@ public class YourPlayer implements BrainySnakePlayer {
             }
 
         }
+
+        if(!zigzagQ.isEmpty()){
+            switch(zigzagQ.poll()){
+                case LEFT:
+                    return new PlayerUpdate(left());
+                case RIGHT:
+                    return new PlayerUpdate(right());
+                case FORWARD:
+                    return new PlayerUpdate(forward());
+                default:
+                    return new PlayerUpdate(forward());
+            }
+        }
+        else{
+            zigzagQ.add(doit.RIGHT);
+            zigzagQ.add(doit.LEFT);
+        }
+
 
         for(int i = 0; i<25; i++){
             if(i%5==0)
