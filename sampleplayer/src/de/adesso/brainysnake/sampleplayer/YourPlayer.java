@@ -67,20 +67,7 @@ public class YourPlayer implements BrainySnakePlayer {
 
     @Override
     public PlayerUpdate tellPlayerUpdate() {
-        if(!stepQ.isEmpty()){
-            lastStep = stepQ.poll();
-            switch(lastStep){
-                case LEFT:
-                    return new PlayerUpdate(left());
-                case RIGHT:
-                    return new PlayerUpdate(right());
-                case FORWARD:
-                    return new PlayerUpdate(forward());
-                default:
-                    return new PlayerUpdate(forward());
-            }
-        }
-        if(isPoint()>-1){
+        if(stepQ.isEmpty() && isPoint()>-1){
             int index = isPoint();
             pos p = indexToCoordinate(index);
             switch(p.x){
@@ -136,8 +123,7 @@ public class YourPlayer implements BrainySnakePlayer {
                 }
             }
         }
-
-        if(stepQ.isEmpty()){
+        else if(stepQ.isEmpty()){
             stepQ.add(doit.RIGHT);
             stepQ.add(doit.LEFT);
         }
