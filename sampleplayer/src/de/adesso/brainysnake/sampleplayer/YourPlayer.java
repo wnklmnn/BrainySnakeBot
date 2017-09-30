@@ -68,7 +68,8 @@ public class YourPlayer implements BrainySnakePlayer {
     @Override
     public PlayerUpdate tellPlayerUpdate() {
         if(!stepQ.isEmpty()){
-            switch(stepQ.poll()){
+            lastStep = stepQ.poll();
+            switch(lastStep){
                 case LEFT:
                     return new PlayerUpdate(left());
                 case RIGHT:
@@ -106,7 +107,6 @@ public class YourPlayer implements BrainySnakePlayer {
                 }
                 case 0:{
                     if(p.y>0){
-                        stepQ.add(doit.RIGHT);
                         for(int i = p.y-1; i>=0; i--){
                             stepQ.add(doit.FORWARD);
                         }
@@ -135,38 +135,12 @@ public class YourPlayer implements BrainySnakePlayer {
                     break;
                 }
             }
-
-            switch(stepQ.poll()){
-                case LEFT:
-                    return new PlayerUpdate(left());
-                case RIGHT:
-                    return new PlayerUpdate(right());
-                case FORWARD:
-                    return new PlayerUpdate(forward());
-                default:
-                    return new PlayerUpdate(forward());
-            }
-
         }
 
-        if(!zigzagQ.isEmpty()){
-            lastStep = zigzagQ.poll();
-            switch(lastStep){
-                case LEFT:
-                    return new PlayerUpdate(left());
-                case RIGHT:
-                    return new PlayerUpdate(right());
-                case FORWARD:
-                    return new PlayerUpdate(forward());
-                default:
-                    return new PlayerUpdate(forward());
-            }
+        if(stepQ.isEmpty()){
+            stepQ.add(doit.RIGHT);
+            stepQ.add(doit.LEFT);
         }
-        else{
-            zigzagQ.add(doit.RIGHT);
-            zigzagQ.add(doit.LEFT);
-        }
-
 
         for(int i = 0; i<25; i++){
             if(i%5==0)
@@ -175,7 +149,17 @@ public class YourPlayer implements BrainySnakePlayer {
         }
         System.out.println("");
 
-        return new PlayerUpdate(forward());
+        switch(stepQ.poll()){
+            case LEFT:
+                return new PlayerUpdate(left());
+            case RIGHT:
+                return new PlayerUpdate(right());
+            case FORWARD:
+                return new PlayerUpdate(forward());
+            default:
+                return new PlayerUpdate(forward());
+        }
+
     }
 
     private int isPoint(){
