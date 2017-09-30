@@ -92,8 +92,6 @@ public class YourPlayer implements BrainySnakePlayer {
                             stepQ.add(doit.FORWARD);
                         }
                     }
-                    stepQ.add(doit.RIGHT);
-                    stepQ.add(doit.RIGHT);
                     break;
                 }
                 case -1:{
@@ -152,7 +150,8 @@ public class YourPlayer implements BrainySnakePlayer {
         }
 
         if(!zigzagQ.isEmpty()){
-            switch(zigzagQ.poll()){
+            lastStep = zigzagQ.poll();
+            switch(lastStep){
                 case LEFT:
                     return new PlayerUpdate(left());
                 case RIGHT:
