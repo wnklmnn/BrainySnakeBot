@@ -17,11 +17,13 @@ public class YourPlayer implements BrainySnakePlayer {
     private Queue<doit> stepQ;
     private Queue<doit> zigzagQ;
     private doit lastStep;
+    private doit lastZigZag;
     public YourPlayer() {
         this.name = String.format("YourPlayer%d", ++num);
         stepQ = new LinkedList<doit>();
         zigzagQ = new LinkedList<doit>();
         lastStep = doit.RIGHT;
+        lastZigZag = doit.LEFT;
     }
     public static void printPlayerView(List<Field> f){
         for(int i = 0; i<25; i++){
@@ -123,10 +125,6 @@ public class YourPlayer implements BrainySnakePlayer {
                 }
             }
         }
-        else if(stepQ.isEmpty()){
-            stepQ.add(doit.RIGHT);
-            stepQ.add(doit.LEFT);
-        }
 
         for(int i = 0; i<25; i++){
             if(i%5==0)
@@ -135,15 +133,26 @@ public class YourPlayer implements BrainySnakePlayer {
         }
         System.out.println("");
 
-        switch(stepQ.poll()){
-            case LEFT:
-                return new PlayerUpdate(left());
-            case RIGHT:
-                return new PlayerUpdate(right());
-            case FORWARD:
-                return new PlayerUpdate(forward());
-            default:
-                return new PlayerUpdate(forward());
+        if(!stepQ.isEmpty()){
+            switch(stepQ.poll()){
+                case LEFT:
+                    return new PlayerUpdate(left());
+                case RIGHT:
+                    return new PlayerUpdate(right());
+                case FORWARD:
+                    return new PlayerUpdate(forward());
+                default:
+                    return new PlayerUpdate(forward());
+            }
+        }
+
+        if(lastZigZag == doit.LEFT) {
+            lastZigZag = doit.RIGHT;
+            return new PlayerUpdate(right());
+        }
+        else{
+            lastZigZag = doit.LEFT;
+            return new PlayerUpdate(left());
         }
 
     }
