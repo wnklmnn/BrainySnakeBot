@@ -5,6 +5,7 @@ import de.adesso.brainysnake.playercommon.BrainySnakePlayer;
 import de.adesso.brainysnake.playercommon.Orientation;
 import de.adesso.brainysnake.playercommon.PlayerState;
 import de.adesso.brainysnake.playercommon.PlayerUpdate;
+import de.adesso.brainysnake.sampleplayer.YourPlayer;
 
 public class KeyBoardPlayer implements BrainySnakePlayer {
 
@@ -48,7 +49,8 @@ public class KeyBoardPlayer implements BrainySnakePlayer {
         if (down) {
             return new PlayerUpdate(Orientation.DOWN);
         }
-
+        System.out.println("Keyoard:");
+        YourPlayer.printPlayerView(this.playerState.getPlayerView().getVisibleFields());
         return null;
     }
 
@@ -56,7 +58,7 @@ public class KeyBoardPlayer implements BrainySnakePlayer {
     public boolean handlePlayerStatusUpdate(PlayerState playerState) {
             /* The SamplePlayer is very lazy, it just stores the last data */
         this.playerState = playerState;
-        System.out.println(playerState.getPlayerView().getVisibleFields());
+
         return true;
     }
 }

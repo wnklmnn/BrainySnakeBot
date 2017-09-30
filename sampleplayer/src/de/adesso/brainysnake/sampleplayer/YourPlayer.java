@@ -10,6 +10,19 @@ import de.adesso.brainysnake.playercommon.*;
  * Implementiere hier deine Schlangensteuerung.
  */
 public class YourPlayer implements BrainySnakePlayer {
+    private static int num = 0;
+    private String name;
+    public YourPlayer() {
+        this.name = String.format("YourPlayer%d", ++num);
+    }
+    public static void printPlayerView(List<Field> f){
+        for(int i = 0; i<25; i++){
+            if(i%5==0)
+                System.out.println("");
+            System.out.print(printField(f, i));
+        }
+        System.out.println("");
+    }
 
     private PlayerState ps;
 
@@ -23,7 +36,7 @@ public class YourPlayer implements BrainySnakePlayer {
 
     @Override
     public String getPlayerName() {
-        return "YourName";
+        return this.name;
     }
 
     @Override
@@ -44,12 +57,7 @@ public class YourPlayer implements BrainySnakePlayer {
         if(isPoint()>-1){
             System.out.println("Yay");
         }
-        for(int i = 0; i<25; i++){
-            if(i%5==0)
-                System.out.println("");
-            System.out.print(printField(i));
-        }
-        System.out.println("");
+        printPlayerView(this.ps.getPlayerView().getVisibleFields());
 
         return new PlayerUpdate(null);
     }
@@ -96,8 +104,9 @@ public class YourPlayer implements BrainySnakePlayer {
     }
 
 
-    private String printField(int id){
-        FieldType f = this.ps.getPlayerView().getVisibleFields().get(id).getFieldType();
+
+    private static String printField(List<Field> field, int id){
+        FieldType f = field.get(id).getFieldType();
         switch (f) {
             case LEVEL:
                 return "L";
