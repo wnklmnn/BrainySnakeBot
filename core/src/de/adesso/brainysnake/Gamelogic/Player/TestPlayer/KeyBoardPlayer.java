@@ -19,19 +19,19 @@ public class KeyBoardPlayer implements BrainySnakePlayer {
     @Override
     public PlayerUpdate tellPlayerUpdate() {
 
-        if (KeyBoardControl.LEFT && !right) {
+        if (KeyBoardControl.LEFT) {
             left = true;
             right = up = down = false;
         }
-        if (KeyBoardControl.RIGHT && !left) {
+        if (KeyBoardControl.RIGHT) {
             right = true;
             left = up = down = false;
         }
-        if (KeyBoardControl.UP && !down) {
+        if (KeyBoardControl.UP) {
             up = true;
             left = right = down = false;
         }
-        if (KeyBoardControl.DOWN && !up) {
+        if (KeyBoardControl.DOWN) {
             down = true;
             left = right = up = false;
         }

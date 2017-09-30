@@ -10,6 +10,7 @@ public class SamplePlayer implements BrainySnakePlayer {
 
     private PlayerState playerState;
     Orientation[] orientations = new Orientation[2];
+    private PlayerState playerState1;
 
     @Override
     public String getPlayerName() {
