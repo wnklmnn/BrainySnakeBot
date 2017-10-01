@@ -149,31 +149,32 @@ public class YourPlayer implements BrainySnakePlayer {
         }
 
 
+        Orientation d;
 
         if(lastZigZag == doit.LEFT) {
-            Orientation d;
             lastZigZag = doit.RIGHT;
-            if(prevField22 == FieldType.LEVEL){
+            if ((prevField22 == FieldType.LEVEL) && (prevField24 == FieldType.LEVEL)) {
                 lastZigZag = doit.LEFT;
-                d = left();}
-            else
+                d = left();
+            } else if ((prevField24 != FieldType.LEVEL) && (prevField22 == FieldType.LEVEL)) {
                 d = right();
-            refresh22and24();
-            return new PlayerUpdate(d);
-        }
-        else{
-            Orientation d;
-            lastZigZag = doit.LEFT;
-            if(prevField24 == FieldType.LEVEL){
-                lastZigZag = doit.RIGHT;
-                d=right();
+            } else {
+                d = right();
             }
-
-            else
-                d= left();
-            refresh22and24();
-            return new PlayerUpdate(d);
         }
+        else {
+            lastZigZag = doit.LEFT;
+            if ((prevField22 == FieldType.LEVEL) && (prevField24 == FieldType.LEVEL)) {
+                lastZigZag = doit.RIGHT;
+                d = right();
+            } else if ((prevField24 == FieldType.LEVEL) && (prevField22 != FieldType.LEVEL)) {
+                d = left();
+            } else {
+                d = left();
+            }
+        }
+        refresh22and24();
+        return new PlayerUpdate(d);
 
     }
 
