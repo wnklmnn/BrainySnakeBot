@@ -1,1 +1,1 @@
-include 'desktop', 'core', 'sampleplayer', 'playercommon', 'plop'
+include 'desktop', 'core', 'sampleplayer', 'playercommon'

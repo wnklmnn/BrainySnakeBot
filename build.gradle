@@ -1,21 +1,5 @@
-buildscript {
-    
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
-    }
-    dependencies {
-        
-
-    }
-}
 
 allprojects {
-    apply plugin: "eclipse"
-    apply plugin: "idea"
 
     version = '1.0'
     ext {
@@ -37,64 +21,58 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java"
+    apply plugin: 'application'
 
+    mainClassName = "de.adesso.brainysnake.desktop.DesktopLauncher"
 
-    dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    sourceCompatibility = 1.7
+    sourceSets.main.java.srcDirs = [ "src/" ]
+    dependencies{
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile project(':core')
     }
+
+    project.ext.assetsDir = new File("../core/assets");
+
+
+
 }
 
 project(":core") {
     apply plugin: "java"
-
-
-    dependencies {
+    apply plugin: 'java-library-distribution'
+    dependencies{
+        compile project(':playercommon')
         compile project(':sampleplayer')
-
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile group: 'junit', name: 'junit', version: '4.12'
     }
+    sourceCompatibility = 1.6
 
-    sourceSets {
-        test {
-            resources {
-                srcDir "test"
-            }
-        }
-    }
+    sourceSets.main.java.srcDirs = [ "src/" ]
+
+
+
+
 }
 
 project(":sampleplayer") {
 
     apply plugin: "java"
 
+    sourceCompatibility = 1.7
+    sourceSets.main.java.srcDirs = [ "src/" ]
 
     dependencies {
         compile project(':playercommon')
-
     }
 }
 
-project(":plop"){
-    apply plugin:"java"
-    dependencies{
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile project(":core")
-    }
-}
+project(':playercommon'){
+    apply plugin: "java"
+    apply plugin: 'java-library-distribution'
 
-
-tasks.eclipse.doLast {
-    delete ".project"
-}
-
-allprojects {
-    task hello {
-        doLast { task ->
-            println "I'm $task.project.name"
-        }
-    }
+    sourceCompatibility = 1.7
+    sourceSets.main.java.srcDirs = [ "src/" ]
 }
