@@ -14,15 +14,22 @@ public class YourPlayer implements BrainySnakePlayer {
     private static int num = 0;
     private String name;
     private PlayerState ps;
+    private int lastPoints;
 
     private Queue<doit> stepQ = new LinkedList<>();
 
-    private doit lastZigZag = doit.RIGHT;
+    private doit lastZigZag;
+    private doit lastStep;
 
     private FieldType prevField22 = FieldType.EMPTY,
-                      prevField24 = FieldType.EMPTY;
+                      prevField24 = FieldType.EMPTY,
+                      prevprevField22 = FieldType.EMPTY,
+                      prevprevField24 = FieldType.EMPTY;
 
     public YourPlayer() {
+        lastZigZag = doit.RIGHT;
+        lastStep = null;
+        lastPoints = 10;
         this.name = String.format("YourPlayer%d", ++num);
     }
 
@@ -58,6 +65,7 @@ public class YourPlayer implements BrainySnakePlayer {
     @Override
     public boolean handlePlayerStatusUpdate(PlayerState playerState) {
         this.ps = playerState;
+
         return true;
     }
 
@@ -70,6 +78,16 @@ public class YourPlayer implements BrainySnakePlayer {
 
     @Override
     public PlayerUpdate tellPlayerUpdate() {
+        if(ps.getPlayerPoints()<lastPoints) {
+            System.out.println("Lost");
+            stepQ.clear();
+            lastZigZag = doit.FORWARD;
+            lastStep = doit.FORWARD;
+            prevField22 = prevprevField22;
+            prevField24 = prevprevField24;
+        }
+
+        lastPoints = ps.getPlayerPoints();
         if (stepQ.isEmpty() && isPoint() != -1) {
             int index = isPoint();
             pos p = indexToCoordinate(index);
@@ -103,23 +121,83 @@ public class YourPlayer implements BrainySnakePlayer {
             if (p.y > 0)
                 for (int i = p.y-1; i >= 0; i--)
                     stepQ.add(doit.FORWARD);
+            lastStep = null;
         }
 
         if (!stepQ.isEmpty()) {
-            refresh22and24();
+            Orientation d;
             switch (stepQ.poll()) {
-                case LEFT:
-                    return new PlayerUpdate(left());
-                case RIGHT:
-                    return new PlayerUpdate(right());
+                case LEFT: {
+                    if(lastStep==null){
+                        if(lastZigZag==doit.RIGHT && prevField24==FieldType.LEVEL)
+                            d = right();
+                        else
+                            d = left();
+                    }
+                    else if(lastStep==doit.FORWARD && prevField22==FieldType.LEVEL)
+                        d = right();
+                    else  if(lastStep==doit.RIGHT && prevField24==FieldType.LEVEL)
+                        d = right();
+                    else
+                        d = left();
+                    break;
+                }
+                case RIGHT: {
+                    if(lastStep==null) {
+                        if (lastZigZag == doit.LEFT && prevField22 == FieldType.LEVEL)
+                            d = left();
+                        else
+                            d = right();
+                    }
+                    else if(lastStep==doit.FORWARD && prevField24==FieldType.LEVEL)
+                        d = left();
+                    else  if(lastStep==doit.LEFT && prevField22==FieldType.LEVEL)
+                        d = left();
+                    else
+                        d = right();
+                    break;
+                }
                 case FORWARD:
-                default:
-                    return new PlayerUpdate(forward());
+                default:{
+                    if(ps.getPlayerView().getVisibleFields().get(22).getFieldType() == FieldType.LEVEL || ps.getPlayerView().getVisibleFields().get(22).getFieldType() == FieldType.NONE){
+                        if(lastStep==null) {
+                            if (lastZigZag == doit.LEFT && prevField22 == FieldType.LEVEL)
+                                d = left();
+                            else
+                                d = right();
+                        }
+                        else if(lastStep==doit.FORWARD && prevField24==FieldType.LEVEL)
+                            d = left();
+                        else  if(lastStep==doit.LEFT && prevField22==FieldType.LEVEL)
+                            d = left();
+                        else
+                            d = right();
+                    }
+                    else
+                        d = forward();
+                    break;
+                }
+
             }
+            refresh22and24();
+            if(d==right()) {
+                lastStep = doit.RIGHT;
+                lastZigZag = doit.RIGHT;
+            }
+            else if(d==left()) {
+                lastStep = doit.LEFT;
+                lastZigZag = doit.LEFT;
+            }
+            else {
+                lastStep = doit.FORWARD;
+                lastZigZag = doit.FORWARD;
+            }
+
+            return new PlayerUpdate(d);
         }
 
 
-        if (lastZigZag == doit.LEFT) {
+        if (lastZigZag == doit.LEFT || lastZigZag == doit.FORWARD) {
             Orientation d;
             lastZigZag = doit.RIGHT;
             if (prevField22 == FieldType.LEVEL) {
@@ -141,14 +219,16 @@ public class YourPlayer implements BrainySnakePlayer {
             refresh22and24();
             return new PlayerUpdate(d);
         } else { //WIP
-            refresh22and24();
+            System.out.println("42 ist doch nicht die Wahrheit!");
             return new PlayerUpdate(forward());
         }
     }
 
     private void refresh22and24(){
-        this.prevField22 = this.ps.getPlayerView().getVisibleFields().get(23).getFieldType();
-        this.prevField24 = this.ps.getPlayerView().getVisibleFields().get(21).getFieldType();
+        this.prevprevField22 = this.prevField22;
+        this.prevprevField24 = this.prevField24;
+        this.prevField22 = this.ps.getPlayerView().getVisibleFields().get(21).getFieldType();
+        this.prevField24 = this.ps.getPlayerView().getVisibleFields().get(23).getFieldType();
     }
 
 
