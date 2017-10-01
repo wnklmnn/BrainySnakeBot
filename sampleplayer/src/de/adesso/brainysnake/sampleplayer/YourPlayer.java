@@ -138,12 +138,16 @@ public class YourPlayer implements BrainySnakePlayer {
             refresh22and24();
             switch(stepQ.poll()){
                 case LEFT:
+                    refresh22and24();
                     return new PlayerUpdate(left());
                 case RIGHT:
+                    refresh22and24();
                     return new PlayerUpdate(right());
                 case FORWARD:
+                    refresh22and24();
                     return new PlayerUpdate(forward());
                 default:
+                    refresh22and24();
                     return new PlayerUpdate(forward());
             }
         }
