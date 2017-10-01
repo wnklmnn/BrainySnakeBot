@@ -197,7 +197,7 @@ public class YourPlayer implements BrainySnakePlayer {
         }
 
 
-        if (lastZigZag == doit.LEFT || lastZigZag == doit.FORWARD) {
+        if (lastZigZag == doit.LEFT) {
             Orientation d;
             lastZigZag = doit.RIGHT;
             if (prevField22 == FieldType.LEVEL) {
@@ -219,8 +219,15 @@ public class YourPlayer implements BrainySnakePlayer {
             refresh22and24();
             return new PlayerUpdate(d);
         } else { //WIP
-            System.out.println("42 ist doch nicht die Wahrheit!");
-            return new PlayerUpdate(forward());
+            Orientation d;
+            lastZigZag = doit.RIGHT;
+            if (prevField24 == FieldType.LEVEL) {
+                lastZigZag = doit.LEFT;
+                d = left();
+            } else
+                d = right();
+            refresh22and24();
+            return new PlayerUpdate(d);
         }
     }
 
