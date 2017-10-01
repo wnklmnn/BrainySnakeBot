@@ -14,37 +14,39 @@ public class YourPlayer implements BrainySnakePlayer {
     private static int num = 0;
     private String name;
     private PlayerState ps;
-    private Queue<doit> stepQ;
-    private Queue<doit> zigzagQ;
-    private doit lastStep;
-    private doit lastZigZag;
-    private FieldType prevField22 = FieldType.EMPTY,prevField24 = FieldType.EMPTY;
+
+    private Queue<doit>   stepQ = new LinkedList<>();
+    private Queue<doit> zigzagQ = new LinkedList<>();
+
+    private doit lastStep   = doit.RIGHT;
+    private doit lastZigZag = doit.RIGHT;
+
+    private FieldType prevField22 = FieldType.EMPTY,
+                      prevField24 = FieldType.EMPTY;
+
     public YourPlayer() {
         this.name = String.format("YourPlayer%d", ++num);
-        stepQ = new LinkedList<doit>();
-        zigzagQ = new LinkedList<doit>();
-        lastStep = doit.RIGHT;
-        lastZigZag = doit.LEFT;
-    }
-    public static void printPlayerView(List<Field> f){
-        for(int i = 0; i<25; i++){
-            if(i%5==0)
-                System.out.println("");
-            System.out.print(printField(f, i));
-        }
-        System.out.println("");
     }
 
-    public enum doit{
+    public static void printPlayerView(List<Field> f) {
+        for (int i = 0; i<25; i++) {
+            if (i%5==0)
+                System.out.println();
+            System.out.print(printField(f, i));
+        }
+        System.out.println();
+    }
+
+    public enum doit {
         RIGHT,
         LEFT,
         FORWARD
-    };
+    }
 
     public class pos {
-        public int x;
-        public int y;
-        public pos(int tx, int ty){
+        int x;
+        int y;
+        public pos(int tx, int ty) {
             x=tx;
             y=ty;
         }
@@ -70,117 +72,85 @@ public class YourPlayer implements BrainySnakePlayer {
 
     @Override
     public PlayerUpdate tellPlayerUpdate() {
-        if(stepQ.isEmpty() && isPoint()>-1){
+        if (stepQ.isEmpty() && isPoint() != -1) {
             int index = isPoint();
             pos p = indexToCoordinate(index);
-            switch(p.x){
-                case -2:{
+            switch (p.x) {
+                case -2:
                     stepQ.add(doit.LEFT);
                     stepQ.add(doit.FORWARD);
-                    if(p.y>0){
+                    if (p.y > 0)
                         stepQ.add(doit.RIGHT);
-                        for(int i = p.y-1; i>=0; i--){
-                            stepQ.add(doit.FORWARD);
-                        }
-                    }
                     break;
-                }
-                case -1:{
+                case -1:
                     stepQ.add(doit.LEFT);
-                    if(p.y>0){
+                    if (p.y > 0)
                         stepQ.add(doit.RIGHT);
-                        for(int i = p.y-1; i>=0; i--){
-                            stepQ.add(doit.FORWARD);
-                        }
-                    }
                     break;
-                }
-                case 0:{
-                    if(p.y>0){
-                        for(int i = p.y-1; i>=0; i--){
-                            stepQ.add(doit.FORWARD);
-                        }
-                    }
+                case 0:
                     break;
-                }
-                case 1:{
+                case 1:
                     stepQ.add(doit.RIGHT);
-                    if(p.y>0){
+                    if (p.y > 0)
                         stepQ.add(doit.LEFT);
-                        for(int i = p.y-1; i>=0; i--){
-                            stepQ.add(doit.FORWARD);
-                        }
-                    }
                     break;
-                }
-                case 2:{
+                case 2:
                     stepQ.add(doit.RIGHT);
                     stepQ.add(doit.FORWARD);
-                    if(p.y>0){
+                    if (p.y > 0)
                         stepQ.add(doit.LEFT);
-                        for(int i = p.y-1; i>=0; i--){
-                            stepQ.add(doit.FORWARD);
-                        }
-                    }
                     break;
-                }
             }
+
+            if (p.y > 0)
+                for (int i = p.y-1; i >= 0; i--)
+                    stepQ.add(doit.FORWARD);
         }
 
-        for(int i = 0; i<25; i++){
-            if(i%5==0)
-                System.out.println("");
+        //TODO: remove debug output before release
+        for (int i = 0; i < 25; i++) {
+            if (i%5 == 0)
+                System.out.println();
             System.out.print(printField(ps.getPlayerView().getVisibleFields(), i));
         }
-        System.out.println("");
+        System.out.println();
 
-        if(!stepQ.isEmpty()){
+        if (!stepQ.isEmpty()) {
             refresh22and24();
-            switch(stepQ.poll()){
+            switch (stepQ.poll()) {
                 case LEFT:
-                    refresh22and24();
                     return new PlayerUpdate(left());
                 case RIGHT:
-                    refresh22and24();
                     return new PlayerUpdate(right());
                 case FORWARD:
-                    refresh22and24();
-                    return new PlayerUpdate(forward());
                 default:
-                    refresh22and24();
                     return new PlayerUpdate(forward());
             }
         }
 
 
-        if(lastZigZag == doit.LEFT) {
+        if (lastZigZag == doit.LEFT) {
             Orientation d;
             lastZigZag = doit.RIGHT;
-            if(prevField22 == FieldType.LEVEL)
-            {
+            if (prevField22 == FieldType.LEVEL) {
                 lastZigZag = doit.LEFT;
                 d = right();
-            }
-            else{
+            } else
                 d = left();
-            }
             refresh22and24();
             return new PlayerUpdate(d);
         }
         else {
             Orientation d;
             lastZigZag = doit.LEFT;
-            if(prevField24 == FieldType.LEVEL){
+            if (prevField24 == FieldType.LEVEL) {
                 lastZigZag = doit.RIGHT;
-                d=left();
-            }
-            else {
+                d = left();
+            } else
                 d = right();
-            }
             refresh22and24();
             return new PlayerUpdate(d);
         }
-
     }
 
     private void refresh22and24(){
@@ -189,18 +159,18 @@ public class YourPlayer implements BrainySnakePlayer {
     }
 
 
-    private int isPoint(){
+    private int isPoint() {
         int num = 0;
-        for(Field f : this.ps.getPlayerView().getVisibleFields()) {
-            if(f.getFieldType() == FieldType.POINT)
+        for (Field f : this.ps.getPlayerView().getVisibleFields()) {
+            if (f.getFieldType() == FieldType.POINT)
                 return num;
             num++;
         }
         return -1;
     }
 
-    private Orientation right(){
-        switch (ps.getPlayerView().getCurrentOrientation()){
+    private Orientation right() {
+        switch (ps.getPlayerView().getCurrentOrientation()) {
             case UP:
                 return Orientation.RIGHT;
             case RIGHT:
@@ -213,8 +183,8 @@ public class YourPlayer implements BrainySnakePlayer {
         return ps.getPlayerView().getCurrentOrientation();
     }
 
-    private Orientation left(){
-        switch (ps.getPlayerView().getCurrentOrientation()){
+    private Orientation left() {
+        switch (ps.getPlayerView().getCurrentOrientation()) {
             case UP:
                 return Orientation.LEFT;
             case RIGHT:
@@ -227,7 +197,7 @@ public class YourPlayer implements BrainySnakePlayer {
         return ps.getPlayerView().getCurrentOrientation();
     }
 
-    private Orientation forward(){
+    private Orientation forward() {
         return ps.getPlayerView().getCurrentOrientation();
     }
 
@@ -238,19 +208,19 @@ public class YourPlayer implements BrainySnakePlayer {
     // ....|2.7.....|
     // ....|1_6_____|
 
-    private pos indexToCoordinate(int index){
+    private pos indexToCoordinate(int index) {
         int tindex = index;
         int y = 0;
-        while(tindex>4){
+        while (tindex > 4) {
             y++;
-            tindex-=5;
+            tindex -= 5;
         }
         y = 5-y;
         int x = tindex-2;
         return new pos(x,y);
     }
 
-    private static String printField(List<Field> field, int id){
+    private static String printField(List<Field> field, int id) {
         FieldType f = field.get(id).getFieldType();
         switch (f) {
             case LEVEL:
