@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import de.adesso.brainysnake.Config;
-import de.adesso.brainysnake.Gamelogic.IO.KeyBoardControl;
 import de.adesso.brainysnake.Gamelogic.Level.GlobalGameState;
 import de.adesso.brainysnake.Gamelogic.Level.Level;
 import de.adesso.brainysnake.Gamelogic.Player.PlayerChoice;
@@ -18,9 +17,8 @@ import de.adesso.brainysnake.Gamelogic.Player.TestPlayer.KeyBoardPlayer;
 import de.adesso.brainysnake.Gamelogic.UI.UiState;
 import de.adesso.brainysnake.playercommon.*;
 import de.adesso.brainysnake.playercommon.math.Point2D;
-import de.adesso.brainysnake.sampleplayer.SamplePlayer2;
 import de.adesso.brainysnake.sampleplayer.SamplePlayer;
-import de.adesso.brainysnake.sampleplayer.YourPlayer;
+import de.adesso.brainysnake.sampleplayer.BrainyMcBrainSnake;
 
 import static de.adesso.brainysnake.playercommon.Orientation.*;
 import static de.adesso.brainysnake.playercommon.RoundEvent.*;
@@ -48,10 +46,10 @@ public class GameMaster {
         };
 
         //brainySnakePlayers.add(playerOne);
-        brainySnakePlayers.add(new YourPlayer());
-        brainySnakePlayers.add(new YourPlayer());
-        brainySnakePlayers.add(new YourPlayer());
-        brainySnakePlayers.add(new YourPlayer());
+        brainySnakePlayers.add(new BrainyMcBrainSnake());
+        brainySnakePlayers.add(new BrainyMcBrainSnake());
+        brainySnakePlayers.add(new BrainyMcBrainSnake());
+        brainySnakePlayers.add(new BrainyMcBrainSnake());
 
         // Build UI Models for the agents
         Map<Orientation, Snake> brainySnakePlayersUiModel = new HashMap<Orientation, Snake>();

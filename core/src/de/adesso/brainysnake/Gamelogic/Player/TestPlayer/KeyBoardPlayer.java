@@ -5,7 +5,7 @@ import de.adesso.brainysnake.playercommon.BrainySnakePlayer;
 import de.adesso.brainysnake.playercommon.Orientation;
 import de.adesso.brainysnake.playercommon.PlayerState;
 import de.adesso.brainysnake.playercommon.PlayerUpdate;
-import de.adesso.brainysnake.sampleplayer.YourPlayer;
+import de.adesso.brainysnake.sampleplayer.BrainyMcBrainSnake;
 
 public class KeyBoardPlayer implements BrainySnakePlayer {
 
@@ -20,7 +20,7 @@ public class KeyBoardPlayer implements BrainySnakePlayer {
     @Override
     public PlayerUpdate tellPlayerUpdate() {
         System.out.println("Keyoard:");
-        YourPlayer.printPlayerView(this.playerState.getPlayerView().getVisibleFields());
+        BrainyMcBrainSnake.printPlayerView(this.playerState.getPlayerView().getVisibleFields());
         if (KeyBoardControl.LEFT) {
             left = true;
             right = up = down = false;

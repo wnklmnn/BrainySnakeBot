@@ -10,8 +10,7 @@ import de.adesso.brainysnake.playercommon.*;
 /**
  * Implementiere hier deine Schlangensteuerung.
  */
-public class YourPlayer implements BrainySnakePlayer {
-    private static int num = 0;
+public class BrainyMcBrainSnake implements BrainySnakePlayer {
     private String name;
     private PlayerState ps;
     private int lastPoints;
@@ -26,11 +25,11 @@ public class YourPlayer implements BrainySnakePlayer {
                       prevprevField22 = FieldType.EMPTY,
                       prevprevField24 = FieldType.EMPTY;
 
-    public YourPlayer() {
+    public BrainyMcBrainSnake() {
         lastZigZag = doit.RIGHT;
         lastStep = null;
         lastPoints = 10;
-        this.name = String.format("YourPlayer%d", ++num);
+        this.name = "BrainyMcBrainSnake";
     }
 
     public static void printPlayerView(List<Field> f) {
