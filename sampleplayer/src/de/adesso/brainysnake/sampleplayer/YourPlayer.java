@@ -149,38 +149,39 @@ public class YourPlayer implements BrainySnakePlayer {
         }
 
 
-        Orientation d;
-
         if(lastZigZag == doit.LEFT) {
+            Orientation d;
             lastZigZag = doit.RIGHT;
-            if ((prevField22 == FieldType.LEVEL) && (prevField24 == FieldType.LEVEL)) {
+            if(prevField22 == FieldType.LEVEL)
+            {
                 lastZigZag = doit.LEFT;
-                d = left();
-            } else if ((prevField24 != FieldType.LEVEL) && (prevField22 == FieldType.LEVEL)) {
-                d = right();
-            } else {
                 d = right();
             }
+            else{
+                d = left();
+            }
+            refresh22and24();
+            return new PlayerUpdate(d);
         }
         else {
+            Orientation d;
             lastZigZag = doit.LEFT;
-            if ((prevField22 == FieldType.LEVEL) && (prevField24 == FieldType.LEVEL)) {
+            if(prevField24 == FieldType.LEVEL){
                 lastZigZag = doit.RIGHT;
-                d = right();
-            } else if ((prevField24 == FieldType.LEVEL) && (prevField22 != FieldType.LEVEL)) {
-                d = left();
-            } else {
-                d = left();
+                d=left();
             }
+            else {
+                d = right();
+            }
+            refresh22and24();
+            return new PlayerUpdate(d);
         }
-        refresh22and24();
-        return new PlayerUpdate(d);
 
     }
 
     private void refresh22and24(){
-        this.prevField22 = this.ps.getPlayerView().getVisibleFields().get(22).getFieldType();
-        this.prevField24 = this.ps.getPlayerView().getVisibleFields().get(24).getFieldType();
+        this.prevField22 = this.ps.getPlayerView().getVisibleFields().get(23).getFieldType();
+        this.prevField24 = this.ps.getPlayerView().getVisibleFields().get(21).getFieldType();
     }
 
 

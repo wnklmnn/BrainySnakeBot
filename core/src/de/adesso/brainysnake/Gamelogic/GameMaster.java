@@ -47,7 +47,9 @@ public class GameMaster {
             }
         };
 
-        brainySnakePlayers.add(playerOne);
+        //brainySnakePlayers.add(playerOne);
+        brainySnakePlayers.add(new YourPlayer());
+        brainySnakePlayers.add(new YourPlayer());
         brainySnakePlayers.add(new YourPlayer());
         brainySnakePlayers.add(new YourPlayer());
 
