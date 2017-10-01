@@ -15,10 +15,8 @@ public class YourPlayer implements BrainySnakePlayer {
     private String name;
     private PlayerState ps;
 
-    private Queue<doit>   stepQ = new LinkedList<>();
-    private Queue<doit> zigzagQ = new LinkedList<>();
+    private Queue<doit> stepQ = new LinkedList<>();
 
-    private doit lastStep   = doit.RIGHT;
     private doit lastZigZag = doit.RIGHT;
 
     private FieldType prevField22 = FieldType.EMPTY,
