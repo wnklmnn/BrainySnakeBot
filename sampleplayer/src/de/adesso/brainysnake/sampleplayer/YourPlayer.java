@@ -107,14 +107,6 @@ public class YourPlayer implements BrainySnakePlayer {
                     stepQ.add(doit.FORWARD);
         }
 
-        //TODO: remove debug output before release
-        for (int i = 0; i < 25; i++) {
-            if (i%5 == 0)
-                System.out.println();
-            System.out.print(printField(ps.getPlayerView().getVisibleFields(), i));
-        }
-        System.out.println();
-
         if (!stepQ.isEmpty()) {
             refresh22and24();
             switch (stepQ.poll()) {
@@ -134,22 +126,25 @@ public class YourPlayer implements BrainySnakePlayer {
             lastZigZag = doit.RIGHT;
             if (prevField22 == FieldType.LEVEL) {
                 lastZigZag = doit.LEFT;
-                d = right();
-            } else
                 d = left();
+            } else
+                d = right();
             refresh22and24();
             return new PlayerUpdate(d);
         }
-        else {
+        else if (lastZigZag == doit.RIGHT) {
             Orientation d;
             lastZigZag = doit.LEFT;
             if (prevField24 == FieldType.LEVEL) {
                 lastZigZag = doit.RIGHT;
-                d = left();
-            } else
                 d = right();
+            } else
+                d = left();
             refresh22and24();
             return new PlayerUpdate(d);
+        } else { //WIP
+            refresh22and24();
+            return new PlayerUpdate(forward());
         }
     }
 
