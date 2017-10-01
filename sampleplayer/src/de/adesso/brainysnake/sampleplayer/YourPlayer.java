@@ -18,6 +18,7 @@ public class YourPlayer implements BrainySnakePlayer {
     private Queue<doit> zigzagQ;
     private doit lastStep;
     private doit lastZigZag;
+    private FieldType prevField22 = FieldType.EMPTY,prevField24 = FieldType.EMPTY;
     public YourPlayer() {
         this.name = String.format("YourPlayer%d", ++num);
         stepQ = new LinkedList<doit>();
@@ -134,6 +135,7 @@ public class YourPlayer implements BrainySnakePlayer {
         System.out.println("");
 
         if(!stepQ.isEmpty()){
+            refresh22and24();
             switch(stepQ.poll()){
                 case LEFT:
                     return new PlayerUpdate(left());
@@ -146,16 +148,40 @@ public class YourPlayer implements BrainySnakePlayer {
             }
         }
 
+
+
         if(lastZigZag == doit.LEFT) {
+            Orientation d;
             lastZigZag = doit.RIGHT;
-            return new PlayerUpdate(right());
+            if(prevField22 == FieldType.LEVEL){
+                lastZigZag = doit.LEFT;
+                d = left();}
+            else
+                d = right();
+            refresh22and24();
+            return new PlayerUpdate(d);
         }
         else{
+            Orientation d;
             lastZigZag = doit.LEFT;
-            return new PlayerUpdate(left());
+            if(prevField24 == FieldType.LEVEL){
+                lastZigZag = doit.RIGHT;
+                d=right();
+            }
+
+            else
+                d= left();
+            refresh22and24();
+            return new PlayerUpdate(d);
         }
 
     }
+
+    private void refresh22and24(){
+        this.prevField22 = this.ps.getPlayerView().getVisibleFields().get(22).getFieldType();
+        this.prevField24 = this.ps.getPlayerView().getVisibleFields().get(24).getFieldType();
+    }
+
 
     private int isPoint(){
         int num = 0;
